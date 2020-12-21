@@ -63,6 +63,11 @@ actions:
                 grub-pc-bin,
                 grub-efi-amd64-bin,
                 grub2-common ]
+{{ else if eq $arch "arm64" }}
+  - action: apt
+    recommends: true
+    packages: [ grub-uboot-bin,
+                grub2-common ]
 {{ end }}
 
   - action: run
@@ -149,7 +154,7 @@ actions:
     command: mksquashfs
                $ROOTDIR
                $ARTIFACTDIR/disk-ws-tmp/contents/casper/filesystem.squashfs
-               -e boot -e build-info
+               -e build-info
                -comp zstd
 
   - action: run
