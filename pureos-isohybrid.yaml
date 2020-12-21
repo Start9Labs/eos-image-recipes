@@ -189,7 +189,7 @@ actions:
                -iso-level 3
                -o "$ARTIFACTDIR/{{ $image }}"
                -full-iso9660-filenames
-               -volid "pureos"
+               -volid "PureOS {{ $version }} {{ $osflavor }} ({{ $imageflavor }})"
                -isohybrid-mbr /usr/lib/ISOLINUX/isohdpfx.bin
                -eltorito-boot isolinux/isolinux.bin
                    -no-emul-boot
