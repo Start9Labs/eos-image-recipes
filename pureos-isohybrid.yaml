@@ -62,7 +62,8 @@ actions:
                 syslinux-efi,
                 grub-pc-bin,
                 grub-efi-amd64-bin,
-                grub2-common ]
+                grub2-common,
+                grub-gfxpayload-lists ]
 {{ else if eq $arch "arm64" }}
   - action: apt
     recommends: true
