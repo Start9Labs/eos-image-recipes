@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=Install PureOS (OEM)
+GenericName=PureOS OEM Installer
+Comment=Install the operating system to disk
+TryExec=pureos-oem-installer
+Exec=pureos-oem-installer
+Icon=calamares
+Terminal=false
+StartupNotify=false
+Categories=System;
+X-AppStream-Ignore=true

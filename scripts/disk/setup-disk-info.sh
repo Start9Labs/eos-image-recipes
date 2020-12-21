@@ -27,9 +27,9 @@ do
     rm -rf conf/
 done
 
-#
+# write disk info string
 cd $DISK_INFO_DIR
-echo "PureOS $VERSION \"$SUITE\" - Build $ARCH $(date -Im)" > info
+echo "PureOS $VERSION \"$SUITE\" - $ARCH Build $(date -Im)" > info
 
 # write md5sum inventory list
 cd $DISK_CONTENTS_DIR

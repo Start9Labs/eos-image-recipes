@@ -4,7 +4,7 @@
 {{- $kernel_flavour := or .kernel_flavour $arch -}}
 
 {{- $suite := or .suite "byzantium" -}}
-{{- $version := or .version "10.0~devel" -}}
+{{- $version := or .version "10.0" -}}
 {{- $osflavor := or .osflavor "gnome" -}}
 {{- $imageflavor := or .imageflavor "live" -}}
 
@@ -45,7 +45,15 @@ actions:
     packages: [ systemd-sysv,
                 linux-image-{{ $kernel_flavour }},
                 casper,
-                calamares ]
+                squashfs-tools ]
+
+{{ if eq $imageflavor "oem" }}
+  - action: apt
+    packages: [ calamares-pureos-oem ]
+{{ else }}
+  - action: apt
+    packages: [ calamares ]
+{{ end }}
 
 {{ if eq $arch "amd64" }}
   - action: apt
@@ -53,7 +61,8 @@ actions:
     packages: [ isolinux,
                 syslinux-efi,
                 grub-pc-bin,
-                grub-efi-amd64-bin ]
+                grub-efi-amd64-bin,
+                grub2-common ]
 {{ end }}
 
   - action: run
@@ -82,6 +91,15 @@ actions:
   - action: run
     chroot: true
     script: scripts/os/04-apt-appstream.sh
+
+{{ if eq $imageflavor "oem" }}
+  - action: run
+    chroot: true
+    script: scripts/os/oem/01-setup-oem.sh
+
+  - action: overlay
+    source: overlays/oem/
+{{ end }}
 
   - action: run
     chroot: true
@@ -118,10 +136,12 @@ actions:
     label: copy-kernel-initramfs
     script: scripts/disk/copy-kernel-initramfs.sh
 
+{{ if eq $arch "amd64" }}
   - action: run
     description: Copy bootloaders
     label: copy-bootloaders
     script: scripts/disk/copy-bootloaders.sh
+{{ end }}
 
   - action: run
     description: Create SquashFS image
@@ -136,15 +156,17 @@ actions:
     label: copy-package-list
     command: cp $ROOTDIR/build-info/packages.manifest $ARTIFACTDIR/disk-ws-tmp/contents/casper/filesystem.manifest
 
+{{ if eq $arch "amd64" }}
   - action: run
-    description: Copy bootloader config files
-    label: copy-bootloader-config
-    script: scripts/disk/copy-bootloader-config.sh
+    description: Make bootloader config files
+    label: make-bootloader-config
+    script: scripts/disk/make-bootloader-config.sh {{ $imageflavor }} {{ $version }}
 
   - action: run
     description: Create UEFI boot disk image
     label: make-uefi-boot-disk
     script: scripts/disk/make-uefi-boot-disk.sh
+{{ end }}
 
   - action: run
     description: Setup disk info
