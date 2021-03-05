@@ -11,7 +11,7 @@ else
 fi
 
 if [ -z "$SUITE" ]; then
-  SUITE="amber"
+  SUITE="byzantium"
   echo "Using default suite: $SUITE"
 else
   echo "Using suite: $SUITE"
