@@ -171,7 +171,7 @@ actions:
   - action: run
     description: Create UEFI boot disk image
     label: make-uefi-boot-disk
-    script: scripts/disk/make-uefi-boot-disk.sh
+    script: scripts/disk/make-uefi-boot-disk.sh {{ $arch }}
 {{ end }}
 
   - action: run
@@ -186,23 +186,17 @@ actions:
     description: Create hybrid ISO image
     label: make-isohybrid
     command: xorriso
-               -as mkisofs
-               -iso-level 3
-               -o "$ARTIFACTDIR/{{ $image }}"
-               -full-iso9660-filenames
+               -outdev "$ARTIFACTDIR/{{ $image }}"
                -volid "PureOS {{ $version }} {{ $osflavor }} ({{ $imageflavor }})"
-               -isohybrid-mbr /usr/lib/ISOLINUX/isohdpfx.bin
-               -eltorito-boot isolinux/isolinux.bin
-                   -no-emul-boot
-                   -boot-load-size 4
-                   -boot-info-table
-                   --eltorito-catalog isolinux/isolinux.cat
-               -eltorito-alt-boot
-                   -e /EFI/boot/efiboot.img
-                   -no-emul-boot
-                   -isohybrid-gpt-basdat
-               -append_partition 2 0xef $ARTIFACTDIR/disk-ws-tmp/contents/EFI/boot/efiboot.img
-               $ARTIFACTDIR/disk-ws-tmp/contents
+               -padding 0
+               -compliance no_emul_toc
+               -map $ARTIFACTDIR/disk-ws-tmp/contents /
+               -chmod 0755 / --
+               -boot_image isolinux dir=/isolinux
+                 -boot_image isolinux system_area=/usr/lib/ISOLINUX/isohdpfx.bin
+               -boot_image any next
+                 -boot_image any efi_path=boot/grub/efi.img
+                 -boot_image isolinux partition_entry=gpt_basdat
 
   - action: run
     label: cleanup
