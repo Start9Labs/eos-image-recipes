@@ -7,8 +7,6 @@ set -e
 #
 # Licensed under the GNU General Public License Version 3
 
-set -x
-
 if [ -z "$1" ]; then
 	echo "usage: $0 ARCH"
 	exit 1
