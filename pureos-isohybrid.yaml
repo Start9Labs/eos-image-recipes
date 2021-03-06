@@ -1,12 +1,13 @@
 {{- $image := or .image "pureos-debos.iso" -}}
+{{- $results_dir := or .results_dir "$ARTIFACTDIR/results" -}}
 
 {{- $arch := or .arch "amd64" -}}
 {{- $kernel_flavour := or .kernel_flavour $arch -}}
 
 {{- $suite := or .suite "byzantium" -}}
 {{- $version := or .version "10.0" -}}
-{{- $osflavor := or .osflavor "gnome" -}}
-{{- $imageflavor := or .imageflavor "live" -}}
+{{- $environment := or .environment "gnome" -}}
+{{- $imagestyle := or .imagestyle "live" -}}
 
 {{- $mirror := or .mirror "https://repo.pureos.net/pureos" -}}
 
@@ -29,12 +30,12 @@ actions:
   #
   # Install OS packages
   #
-{{ if eq $osflavor "gnome" }}
+{{ if eq $environment "gnome" }}
   - action: apt
     recommends: true
     packages: [ pureos-gnome,
                 adwaita-qt ]
-{{ else if eq $osflavor "plasma" }}
+{{ else if eq $environment "plasma" }}
   - action: apt
     recommends: true
     packages: [ pureos-plasma ]
@@ -47,7 +48,7 @@ actions:
                 casper,
                 squashfs-tools ]
 
-{{ if eq $imageflavor "oem" }}
+{{ if eq $imagestyle "oem" }}
   - action: apt
     packages: [ calamares-pureos-oem ]
 {{ else }}
@@ -98,7 +99,7 @@ actions:
     chroot: true
     script: scripts/os/04-apt-appstream.sh
 
-{{ if eq $imageflavor "oem" }}
+{{ if eq $imagestyle "oem" }}
   - action: run
     chroot: true
     script: scripts/os/oem/01-setup-oem.sh
@@ -166,7 +167,7 @@ actions:
   - action: run
     description: Make bootloader config files
     label: make-bootloader-config
-    script: scripts/disk/make-bootloader-config.sh {{ $imageflavor }} {{ $version }}
+    script: scripts/disk/make-bootloader-config.sh {{ $imagestyle }} {{ $version }}
 
   - action: run
     description: Create UEFI boot disk image
@@ -183,11 +184,13 @@ actions:
   # Write image
   #
   - action: run
+    command: mkdir -p "{{ $results_dir }}"
+  - action: run
     description: Create hybrid ISO image
     label: make-isohybrid
     command: xorriso
-               -outdev "$ARTIFACTDIR/{{ $image }}"
-               -volid "PureOS {{ $version }} {{ $osflavor }} ({{ $imageflavor }})"
+               -outdev "{{ $results_dir }}/{{ $image }}"
+               -volid "PureOS {{ $version }} {{ $environment }} ({{ $imagestyle }})"
                -padding 0
                -compliance no_emul_toc
                -map $ARTIFACTDIR/disk-ws-tmp/contents /
@@ -198,6 +201,14 @@ actions:
                  -boot_image any efi_path=boot/grub/efi.img
                  -boot_image isolinux partition_entry=gpt_basdat
 
+  - action: run
+    description: Make zsync file
+    label: zsync
+    command: cd "{{ $results_dir }}" && zsyncmake -C -b 2048 -u {{ $image }} "{{ $results_dir }}/{{ $image }}"
+
+  #
+  # Cleanup
+  #
   - action: run
     label: cleanup
     command: rm -rf "$ARTIFACTDIR/disk-ws-tmp/"

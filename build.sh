@@ -3,39 +3,44 @@ set -e
 
 echo "==== PureOS Image Build ===="
 
-if [ -z "$FLAVOR" ]; then
-  FLAVOR="gnome-live"
-  echo "Using default flavor: $FLAVOR"
+if [ -z "$IB_ENVIRONMENT" ]; then
+  IB_ENVIRONMENT="gnome"
+  echo "Building for default OS environment: $IB_ENVIRONMENT"
 else
-  echo "Using flavor: $FLAVOR"
+  echo "Building for environment: $IB_ENVIRONMENT"
 fi
 
-if [ -z "$SUITE" ]; then
-  SUITE="byzantium"
-  echo "Using default suite: $SUITE"
+if [ -z "$IB_SUITE" ]; then
+  IB_SUITE="byzantium"
+  echo "Building for default suite: $IB_SUITE"
 else
-  echo "Using suite: $SUITE"
+  echo "Building for suite: $IB_SUITE"
 fi
 
-if [ -z "$ARCH" ]; then
-  ARCH="amd64"
-  echo "Using default architecture: $ARCH"
+if [ -z "$IB_TARGET_ARCH" ]; then
+  IB_TARGET_ARCH="amd64"
+  echo "Building for default architecture: $IB_TARGET_ARCH"
 else
-  echo "Using architecture: $ARCH"
+  echo "Building for architecture: $IB_TARGET_ARCH"
 fi
 
-OS_FLAVOR=$(echo $FLAVOR | cut -f1 -d-)
-IMAGE_FLAVOR=${FLAVOR#*-}
-if [ "$IMAGE_FLAVOR" = "$FLAVOR" ]; then
-  IMAGE_FLAVOR="live"
-  echo "Using default image type: $IMAGE_FLAVOR"
+if [ -z "$IB_IMAGE_STYLE" ]; then
+  IB_IMAGE_STYLE="live"
+  echo "Building default image variant: $IB_IMAGE_STYLE"
 else
-  echo "Using image type: $IMAGE_FLAVOR"
+  echo "Building image variant: $IB_IMAGE_STYLE"
 fi
+
+if [ -z "$container" ]; then
+  RESULTS_DIR="/srv/artifacts"
+else
+  RESULTS_DIR="$(dirname "$(readlink -f "$0")")/results"
+fi
+  echo "Saving results in: $RESULTS_DIR"
 
 CURRENT_DATE=$(date +%Y%m%d)
 
-case "$SUITE" in
+case "$IB_SUITE" in
   byzantium)
     dist_version="10"
     dist_reltag="~devel"
@@ -50,7 +55,7 @@ case "$SUITE" in
 esac
 VERSION_FULL="${dist_version}${dist_reltag}"
 
-IMAGE_FILENAME=pureos-${VERSION_FULL}-${FLAVOR}-${CURRENT_DATE}_${ARCH}.iso
+IMAGE_FILENAME=pureos-${VERSION_FULL}-${IB_ENVIRONMENT}-${IB_IMAGE_STYLE}-${CURRENT_DATE}_${IB_TARGET_ARCH}.iso
 
 rm -rf ./disk-ws-tmp/
 echo ""
@@ -59,9 +64,10 @@ exec debos \
 	-c4 \
 	--scratchsize=8G \
 	pureos-isohybrid.yaml \
-	-t arch:"$ARCH" \
-	-t suite:"$SUITE" \
-	-t version:"$VERSION_FULL" \
-	-t osflavor:"$OS_FLAVOR" \
-	-t imageflavor:"$IMAGE_FLAVOR" \
-	-t image:"$IMAGE_FILENAME"
+	-t arch:"${IB_TARGET_ARCH}" \
+	-t suite:"${IB_SUITE}" \
+	-t version:"${VERSION_FULL}" \
+	-t environment:"${IB_ENVIRONMENT}" \
+	-t imagestyle:"${IB_IMAGE_STYLE}" \
+	-t image:"$IMAGE_FILENAME" \
+	-t results_dir:"$RESULTS_DIR"
