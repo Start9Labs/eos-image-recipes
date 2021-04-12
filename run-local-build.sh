@@ -27,7 +27,7 @@ export IB_ENVIRONMENT=${ENVNAME}
 export IB_SUITE=${SUITE}
 export IB_TARGET_ARCH=${ARCH}
 export IB_IMAGE_STYLE=${STYLE}
-./build.sh
+exec ./build.sh
 END
 
 mkdir -p ${BASEDIR}/results
