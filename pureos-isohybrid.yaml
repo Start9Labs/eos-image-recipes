@@ -206,6 +206,11 @@ actions:
     label: zsync
     command: cd "{{ $results_dir }}" && zsyncmake -C -b 2048 -u {{ $image }} "{{ $results_dir }}/{{ $image }}"
 
+  - action: run
+    description: Write checksums
+    label: checksums
+    script: scripts/finish/make-checksums.sh "{{ $results_dir }}"
+
   #
   # Cleanup
   #
