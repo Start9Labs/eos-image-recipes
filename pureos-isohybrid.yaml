@@ -1,4 +1,4 @@
-{{- $image := or .image "pureos-debos.iso" -}}
+{{- $image := or .image "pureos-debos" -}}
 {{- $results_dir := or .results_dir "$ARTIFACTDIR/results" -}}
 
 {{- $arch := or .arch "amd64" -}}
@@ -160,7 +160,7 @@ actions:
                -comp zstd
 
   - action: run
-    label: copy-package-list
+    label: copy-package-list-disk
     command: cp $ROOTDIR/build-info/packages.manifest $ARTIFACTDIR/disk-ws-tmp/contents/casper/filesystem.manifest
 
 {{ if eq $arch "amd64" }}
@@ -189,7 +189,7 @@ actions:
     description: Create hybrid ISO image
     label: make-isohybrid
     command: xorriso
-               -outdev "{{ $results_dir }}/{{ $image }}"
+               -outdev "{{ $results_dir }}/{{ $image }}.iso"
                -volid "PureOS {{ $version }} {{ $environment }} ({{ $imagestyle }})"
                -padding 0
                -compliance no_emul_toc
@@ -204,7 +204,11 @@ actions:
   - action: run
     description: Make zsync file
     label: zsync
-    command: cd "{{ $results_dir }}" && zsyncmake -C -b 2048 -u {{ $image }} "{{ $results_dir }}/{{ $image }}"
+    command: cd "{{ $results_dir }}" && zsyncmake -C -b 2048 -u {{ $image }}.iso "{{ $results_dir }}/{{ $image }}.iso"
+
+  - action: run
+    label: copy-package-list
+    command: cp $ROOTDIR/build-info/packages.manifest "{{ $results_dir }}/{{ $image }}.packages"
 
   - action: run
     description: Write checksums

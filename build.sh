@@ -55,7 +55,7 @@ case "$IB_SUITE" in
 esac
 VERSION_FULL="${dist_version}${dist_reltag}"
 
-IMAGE_FILENAME=pureos-${VERSION_FULL}-${IB_ENVIRONMENT}-${IB_IMAGE_STYLE}-${CURRENT_DATE}_${IB_TARGET_ARCH}.iso
+IMAGE_BASENAME=pureos-${VERSION_FULL}-${IB_ENVIRONMENT}-${IB_IMAGE_STYLE}-${CURRENT_DATE}_${IB_TARGET_ARCH}
 
 rm -rf ./disk-ws-tmp/
 echo ""
@@ -69,5 +69,5 @@ exec debos \
 	-t version:"${VERSION_FULL}" \
 	-t environment:"${IB_ENVIRONMENT}" \
 	-t imagestyle:"${IB_IMAGE_STYLE}" \
-	-t image:"$IMAGE_FILENAME" \
+	-t image:"$IMAGE_BASENAME" \
 	-t results_dir:"$RESULTS_DIR"
