@@ -60,6 +60,7 @@ IMAGE_BASENAME=pureos-${VERSION_FULL}-${IB_ENVIRONMENT}-${IB_IMAGE_STYLE}-${CURR
 rm -rf ./disk-ws-tmp/
 echo ""
 exec debos \
+        -b kvm \
 	-m4G \
 	-c4 \
 	--scratchsize=8G \
