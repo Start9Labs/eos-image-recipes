@@ -32,11 +32,11 @@ else
 fi
 
 if [ -z "$container" ]; then
-  RESULTS_DIR="/srv/artifacts"
-else
   RESULTS_DIR="$(dirname "$(readlink -f "$0")")/results"
+else
+  RESULTS_DIR="/srv/artifacts"
 fi
-  echo "Saving results in: $RESULTS_DIR"
+echo "Saving results in: $RESULTS_DIR"
 
 CURRENT_DATE=$(date +%Y%m%d)
 
