@@ -15,11 +15,3 @@ apt-get install -yq \
 	grub-pc-bin \
 	xorriso \
 	zsync
-
-# in case KVM is unavailable, we need UML
-. /etc/os-release
-if [ "$VERSION_CODENAME" != "amber" ]; then
-    apt-get install -yq \
-	user-mode-linux \
-	libslirp-helper
-fi;
