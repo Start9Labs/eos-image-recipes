@@ -35,7 +35,7 @@ set +e
 debspawn run \
 	-x \
 	--arch=amd64 \
-	--allow=kvm \
+	--allow=kvm,read-kmods \
 	--cachekey="${SUITE}-mkimage" \
 	--init-command="${BASEDIR}/prepare.sh" \
 	--build-dir=${BASEDIR} \
