@@ -13,3 +13,5 @@ sudo mkdir -p /etc/debspawn/ && echo "AllowUnsafePermissions=true" | sudo tee /e
 # Build byzantium-gnome-live image (the default)
 ./run-local-build.sh byzantium
 ```
+
+In order for the build to work properly, you will need debspawn >= 0.5.1, the build may fail with prior versions.
