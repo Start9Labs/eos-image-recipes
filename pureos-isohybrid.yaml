@@ -214,7 +214,7 @@ actions:
   - action: run
     description: Write checksums
     label: checksums
-    script: scripts/finish/make-checksums.sh "{{ $results_dir }}"
+    script: scripts/finish/make-checksums.sh "{{ $image }}" "{{ $results_dir }}"
 
   #
   # Cleanup
