@@ -207,6 +207,7 @@ actions:
     command: cd "{{ $results_dir }}" && zsyncmake -C -b 2048 -u {{ $image }}.iso "{{ $results_dir }}/{{ $image }}.iso"
 
   - action: run
+    description: Copy package list
     label: copy-package-list
     command: cp $ROOTDIR/build-info/packages.manifest "{{ $results_dir }}/{{ $image }}.packages"
 
@@ -219,5 +220,6 @@ actions:
   # Cleanup
   #
   - action: run
+    description: Cleanup
     label: cleanup
     command: rm -rf "$ARTIFACTDIR/disk-ws-tmp/"

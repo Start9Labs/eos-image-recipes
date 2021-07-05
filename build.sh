@@ -31,6 +31,7 @@ else
   echo "Building image variant: $IB_IMAGE_STYLE"
 fi
 
+prep_results_dir="$(dirname "$(readlink -f "$0")")/results-prep"
 if [ -z "$container" ]; then
   RESULTS_DIR="$(dirname "$(readlink -f "$0")")/results"
 else
@@ -59,8 +60,8 @@ IMAGE_BASENAME=pureos-${VERSION_FULL}-${IB_ENVIRONMENT}-${IB_IMAGE_STYLE}-${CURR
 
 rm -rf ./disk-ws-tmp/
 echo ""
-exec debos \
-        -b kvm \
+debos \
+	-b kvm \
 	-m4G \
 	-c4 \
 	--scratchsize=8G \
@@ -71,4 +72,5 @@ exec debos \
 	-t environment:"${IB_ENVIRONMENT}" \
 	-t imagestyle:"${IB_IMAGE_STYLE}" \
 	-t image:"$IMAGE_BASENAME" \
-	-t results_dir:"$RESULTS_DIR"
+	-t results_dir:"$prep_results_dir"
+mv $prep_results_dir/* $RESULTS_DIR/
