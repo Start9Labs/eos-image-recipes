@@ -4,6 +4,7 @@ set -x
 
 export DEBIAN_FRONTEND=noninteractive
 apt-get install -yq \
+	cpio \
 	debos \
 	dosfstools \
 	grub-common \
