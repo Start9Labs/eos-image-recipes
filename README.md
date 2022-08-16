@@ -9,6 +9,7 @@ official PureOS images, you can use the `run-local-build.sh` helper script:
 # Prerequisites
 sudo apt install debspawn
 sudo mkdir -p /etc/debspawn/ && echo "AllowUnsafePermissions=true" | sudo tee /etc/debspawn/global.toml
+debspawn create byzantium
 
 # Build byzantium-gnome-live image (the default)
 ./run-local-build.sh byzantium
