@@ -32,12 +32,18 @@ else
 fi
 
 prep_results_dir="$(dirname "$(readlink -f "$0")")/results-prep"
-if [ -z "$container" ]; then
-  RESULTS_DIR="$(dirname "$(readlink -f "$0")")/results"
-else
+if systemd-detect-virt -qc; then
   RESULTS_DIR="/srv/artifacts"
+else
+  RESULTS_DIR="$(dirname "$(readlink -f "$0")")/results"
 fi
 echo "Saving results in: $RESULTS_DIR"
+
+kvm_flags="-b kvm"
+if [ "$IB_NO_FAKEMACHINE" = "1" ]; then
+  echo "WARNING: Not using fakemachine, building in the host environment."
+  kvm_flags="--disable-fakemachine"
+fi
 
 CURRENT_DATE=$(date +%Y%m%d)
 
@@ -61,7 +67,7 @@ IMAGE_BASENAME=pureos-${VERSION_FULL}-${IB_ENVIRONMENT}-${IB_IMAGE_STYLE}-${CURR
 rm -rf ./disk-ws-tmp/
 echo ""
 debos \
-	-b kvm \
+        $kvm_flags \
 	-m4G \
 	-c4 \
 	--scratchsize=8G \
