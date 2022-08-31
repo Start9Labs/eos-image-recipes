@@ -1,0 +1,20 @@
+{{- $image := or .image "pureos-debos" -}}
+{{- $arch := or .arch "amd64" -}}
+{{- $suite := or .suite "byzantium" -}}
+{{- $environment := or .environment "gnome" -}}
+{{- $imagestyle := or .imagestyle "live" -}}
+
+architecture: {{ $arch }}
+
+# Custom actions to modify the PureOS image for dedicated
+# special use-cases can be added here.
+# Example:
+#  - action: apt
+#    recommends: true
+#    packages:
+#      - hello
+
+actions:
+  - action: run
+    chroot: true
+    script: vendor/01-customization.sh

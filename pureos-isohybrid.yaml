@@ -112,9 +112,18 @@ actions:
     chroot: true
     script: scripts/os/05-package-hacks.sh
 
-  - action: run
-    chroot: true
-    script: scripts/os/06-customization.sh
+  #
+  # Hook for possible 3rd-party customization
+  #
+  - action: recipe
+    recipe: customize.yaml
+    variables:
+      arch: {{ $arch }}
+      kernel_flavour: {{ $kernel_flavour }}
+      suite: {{ $suite }}
+      version: {{ $version }}
+      environment: {{ $environment }}
+      imagestyle: {{ $imagestyle }}
 
   #
   # Finish OS image configuration
