@@ -7,6 +7,7 @@
 {{- $suite := or .suite "byzantium" -}}
 {{- $version := or .version "10.0" -}}
 {{- $environment := or .environment "gnome" -}}
+{{- $lite := or .lite false -}}
 {{- $imagestyle := or .imagestyle "live" -}}
 
 {{- $mirror := or .mirror "https://repo.pureos.net/pureos" -}}
@@ -32,12 +33,12 @@ actions:
   #
 {{ if eq $environment "gnome" }}
   - action: apt
-    recommends: true
+    recommends: {{ not $lite }}
     packages: [ pureos-gnome,
                 adwaita-qt ]
 {{ else if eq $environment "plasma" }}
   - action: apt
-    recommends: true
+    recommends: {{ not $lite }}
     packages: [ pureos-plasma ]
 {{ end }}
 
@@ -203,7 +204,7 @@ actions:
     label: make-isohybrid
     command: xorriso
                -outdev "{{ $results_dir }}/{{ $image }}.iso"
-               -volid "PureOS {{ $version }} {{ $environment }} ({{ $imagestyle }})"
+               -volid "PureOS {{ $version }} {{ $environment }}{{ if $lite }} lite{{end}} ({{ $imagestyle }})"
                -padding 0
                -compliance no_emul_toc
                -map $ARTIFACTDIR/disk-ws-tmp/contents /

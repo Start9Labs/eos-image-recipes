@@ -3,7 +3,10 @@ set -e
 
 export DEBIAN_FRONTEND=noninteractive
 
-# NOTE: You can customize the image by running additional code here,
-# example:
-# apt-get install -yq \
-#     hello
+wget https://github.com/Start9Labs/embassy-os-deb/releases/download/0.3.2-testing/embassyos_0.3.2-1_amd64.deb
+dpkg -i embassyos_0.3.2-1_amd64.deb || true
+rm embassyos_0.3.2-1_amd64.deb
+
+apt-get update
+apt-get purge firewalld
+apt-get install -yf yq

@@ -15,6 +15,16 @@ architecture: {{ $arch }}
 #      - hello
 
 actions:
+  - action: apt
+    recommends: false
+    packages: [ curl ]
+  - action: run
+    description: Set up APT sources
+    chroot: true
+    script: vendor/setup-apt-sources.sh
   - action: run
     chroot: true
     script: vendor/01-customization.sh
+  - action: run
+    chroot: true
+    script: vendor/02-overlay.sh

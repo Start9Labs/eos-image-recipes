@@ -44,6 +44,7 @@ SUITE="$1"
 ENVNAME="$2"
 STYLE="$3"
 ARCH="$4"
+LITE="$5"
 
 if [ -z "$DSNAME" ]; then
 	DSNAME="$SUITE"
@@ -54,6 +55,7 @@ cat > $imgbuild_fname <<END
 #!/bin/sh
 
 export IB_ENVIRONMENT=${ENVNAME}
+export IB_LITE=${LITE}
 export IB_SUITE=${SUITE}
 export IB_TARGET_ARCH=${ARCH}
 export IB_IMAGE_STYLE=${STYLE}

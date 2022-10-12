@@ -10,6 +10,14 @@ else
   echo "Building for environment: $IB_ENVIRONMENT"
 fi
 
+if [ -z "$IB_LITE" ]; then
+  IB_LITE="false"
+  echo "Building for full OS"
+else
+  IB_LITE="true"
+  echo "Building for lite OS"
+fi
+
 if [ -z "$IB_SUITE" ]; then
   IB_SUITE="byzantium"
   echo "Building for default suite: $IB_SUITE"
@@ -62,7 +70,7 @@ case "$IB_SUITE" in
 esac
 VERSION_FULL="${dist_version}${dist_reltag}"
 
-IMAGE_BASENAME=pureos-${VERSION_FULL}-${IB_ENVIRONMENT}-${IB_IMAGE_STYLE}-${CURRENT_DATE}_${IB_TARGET_ARCH}
+IMAGE_BASENAME=pureos-${VERSION_FULL}-${IB_ENVIRONMENT}$(test "${IB_LITE}" = "true" && echo -n "-lite" || true)-${IB_IMAGE_STYLE}-${CURRENT_DATE}_${IB_TARGET_ARCH}
 
 rm -rf ./disk-ws-tmp/
 echo ""
@@ -76,6 +84,7 @@ debos \
 	-t suite:"${IB_SUITE}" \
 	-t version:"${VERSION_FULL}" \
 	-t environment:"${IB_ENVIRONMENT}" \
+  -t lite:"${IB_LITE}" \
 	-t imagestyle:"${IB_IMAGE_STYLE}" \
 	-t image:"$IMAGE_BASENAME" \
 	-t results_dir:"$prep_results_dir"
