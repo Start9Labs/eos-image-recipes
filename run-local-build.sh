@@ -35,7 +35,7 @@ done
 set -- "${POSITIONAL_ARGS[@]}" # restore positional parameters
 
 if [ -z "$1" ]; then
-	echo "usage: $0 SUITE [ENVIRONMENT] [IMAGE-STYLE] [ARCH]"
+	echo "usage: $0 SUITE [ENVIRONMENT] [IMAGE-STYLE] [ARCH] [LITE]"
 	exit 1
 fi
 

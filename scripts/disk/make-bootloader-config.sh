@@ -17,6 +17,8 @@ install -v $RECIPEDIR/bootloaders/isolinux/* $DISK_CONTENTS_DIR/isolinux/
 case "$IMAGE_FLAVOR" in
   live)
   ;;
+  custom)
+  ;;
   oem)
     install -v $RECIPEDIR/bootloaders/isolinux-oem/* $DISK_CONTENTS_DIR/isolinux/
   ;;

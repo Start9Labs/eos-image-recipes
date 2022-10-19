@@ -40,6 +40,10 @@ actions:
   - action: apt
     recommends: {{ not $lite }}
     packages: [ pureos-plasma ]
+{{ else }}
+  - action: apt
+    recommends: {{ not $lite }}
+    packages: [ pureos-standard ]
 {{ end }}
 
   - action: apt
@@ -47,12 +51,13 @@ actions:
     packages: [ systemd-sysv,
                 linux-image-{{ $kernel_flavour }},
                 casper,
-                squashfs-tools ]
+                squashfs-tools,
+                memtest86+ ]
 
 {{ if eq $imagestyle "oem" }}
   - action: apt
     packages: [ calamares-pureos-oem ]
-{{ else }}
+{{ else if eq $imagestyle "live" }}
   - action: apt
     packages: [ calamares ]
 {{ end }}
@@ -204,7 +209,7 @@ actions:
     label: make-isohybrid
     command: xorriso
                -outdev "{{ $results_dir }}/{{ $image }}.iso"
-               -volid "PureOS {{ $version }} {{ $environment }}{{ if $lite }} lite{{end}} ({{ $imagestyle }})"
+               -volid "PureOS {{ $version }} {{ $environment }} ({{ $imagestyle }})"
                -padding 0
                -compliance no_emul_toc
                -map $ARTIFACTDIR/disk-ws-tmp/contents /

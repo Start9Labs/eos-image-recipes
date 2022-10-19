@@ -25,6 +25,3 @@ actions:
   - action: run
     chroot: true
     script: vendor/01-customization.sh
-  - action: run
-    chroot: true
-    script: vendor/02-overlay.sh
