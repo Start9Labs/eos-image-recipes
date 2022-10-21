@@ -10,6 +10,6 @@ rm embassyos_0.3.2-1_amd64.deb
 apt-get update
 apt-get install -yf
 
-useradd start9
+useradd --shell /bin/bash -m start9
 echo start9:embassy | chpasswd
 usermod -aG sudo start9
