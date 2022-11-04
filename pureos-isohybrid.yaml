@@ -87,7 +87,7 @@ actions:
   #
   - action: run
     chroot: true
-    command: echo pureos > /etc/hostname
+    command: echo embassy > /etc/hostname
 
   - action: run
     chroot: true
