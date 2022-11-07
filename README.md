@@ -13,7 +13,7 @@ sudo mkdir -p /etc/debspawn/ && echo "AllowUnsafePermissions=true" | sudo tee /e
 debspawn create byzantium
 
 # Build byzantium-none-live-lite image
-./run-local-build.sh byzantium none live "" true
+./run-local-build.sh byzantium none custom "" true
 ```
 
 In order for the build to work properly, you will need debspawn >= 0.5.1, the

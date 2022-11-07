@@ -72,6 +72,11 @@ VERSION_FULL="${dist_version}${dist_reltag}"
 
 IMAGE_BASENAME=pureos-${VERSION_FULL}-${IB_ENVIRONMENT}$(test "${IB_LITE}" = "true" && echo -n "-lite" || true)-${IB_IMAGE_STYLE}-${CURRENT_DATE}_${IB_TARGET_ARCH}
 
+cat > /etc/wgetrc << EOF
+retry_connrefused = on
+tries = 100
+EOF
+
 rm -rf ./disk-ws-tmp/
 echo ""
 debos \
