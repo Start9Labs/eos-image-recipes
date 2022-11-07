@@ -15,6 +15,10 @@
 architecture: {{ $arch }}
 
 actions:
+  - action: run
+    chroot: false
+    script: scripts/os/set-wgetrc.sh
+    
   - action: debootstrap
     suite: {{ $suite }}
     components:
