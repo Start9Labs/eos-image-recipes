@@ -22,6 +22,9 @@ actions:
     description: Set up APT sources
     chroot: true
     script: vendor/setup-apt-sources.sh
+  - action: overlay
+    source: overlays/vendor/
+    
   - action: run
     chroot: true
     script: vendor/01-customization.sh
