@@ -4,8 +4,8 @@ set -e
 export DEBIAN_FRONTEND=noninteractive
 
 apt-get update
-apt install -y /root/embassyos_0.3.2-1_amd64.deb
-rm /root/embassyos_0.3.2-1_amd64.deb
+apt install -y /root/embassyos_0.3.x-1_amd64.deb
+rm /root/embassyos_0.3.x-1_amd64.deb
 
 useradd --shell /bin/bash -m start9
 echo start9:embassy | chpasswd
