@@ -57,7 +57,12 @@ actions:
                 casper,
                 squashfs-tools,
                 memtest86+ ]
-
+  
+  - action: run
+    description: Install latest os
+    chroot: true
+    script: scripts/os/install-new-linux.sh
+    
 {{ if eq $imagestyle "oem" }}
   - action: apt
     packages: [ calamares-pureos-oem ]
