@@ -45,6 +45,13 @@ ENVNAME="$2"
 STYLE="$3"
 ARCH="$4"
 LITE="$5"
+VERSION=0.3.3 #"$(dpkg-deb --fsys-tarfile overlays/vendor/root/embassyos_0.3.x-1_amd64.deb | tar --to-stdout -xvf - ./usr/lib/embassy/VERSION.txt)"
+GIT_HASH="$(dpkg-deb --fsys-tarfile overlays/vendor/root/embassyos_0.3.x-1_amd64.deb | tar --to-stdout -xvf - ./usr/lib/embassy/GIT_HASH.txt | head -c 7)"
+EOS_ENV="$(dpkg-deb --fsys-tarfile overlays/vendor/root/embassyos_0.3.x-1_amd64.deb | tar --to-stdout -xvf - ./usr/lib/embassy/ENVIRONMENT.txt)"
+VERSION_FULL="${VERSION}-${GIT_HASH}"
+if [ -n "$EOS_ENV" ]; then
+  VERSION_FULL="$VERSION_FULL~${EOS_ENV}"
+fi
 
 if [ -z "$DSNAME" ]; then
 	DSNAME="$SUITE"
@@ -60,6 +67,7 @@ export IB_SUITE=${SUITE}
 export IB_TARGET_ARCH=${ARCH}
 export IB_IMAGE_STYLE=${STYLE}
 export IB_NO_FAKEMACHINE=${NO_FAKEMACHINE}
+export VERSION_FULL=~${EOS_ENV}
 exec ./build.sh
 END
 
@@ -79,7 +87,7 @@ debspawn run \
 	--init-command="${BASEDIR}/prepare.sh" \
 	--build-dir=${BASEDIR} \
 	--artifacts-out=${BASEDIR}/results \
-	--header="PureOS Image Build (for ${SUITE})" \
+	--header="embassyOS Image Build (for ${SUITE})" \
 	--suite=${SUITE} \
 	${DSNAME} \
 	${imgbuild_fname}
