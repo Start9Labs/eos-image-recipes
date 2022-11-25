@@ -13,7 +13,7 @@ usermod -aG sudo start9
 
 sed -i 's/USERNAME="pureos"/USERNAME="start9"/g' /etc/casper.conf
 sed -i 's/HOST="pureos"/HOST="embassy"/g' /etc/casper.conf
-sed -i 's/BUILD_SYSTEM="PureOS"/HOST="embassyOS"/g' /etc/casper.conf
+sed -i 's/BUILD_SYSTEM="PureOS"/BUILD_SYSTEM="embassyOS"/g' /etc/casper.conf
 
 echo "start9 ALL=(ALL:ALL) NOPASSWD: ALL" | sudo tee "/etc/sudoers.d/010_start9-nopasswd"
 

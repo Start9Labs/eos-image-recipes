@@ -45,7 +45,7 @@ ENVNAME="$2"
 STYLE="$3"
 ARCH="$4"
 LITE="$5"
-VERSION=0.3.3 #"$(dpkg-deb --fsys-tarfile overlays/vendor/root/embassyos_0.3.x-1_amd64.deb | tar --to-stdout -xvf - ./usr/lib/embassy/VERSION.txt)"
+VERSION="$(dpkg-deb --fsys-tarfile overlays/vendor/root/embassyos_0.3.x-1_amd64.deb | tar --to-stdout -xvf - ./usr/lib/embassy/VERSION.txt)"
 GIT_HASH="$(dpkg-deb --fsys-tarfile overlays/vendor/root/embassyos_0.3.x-1_amd64.deb | tar --to-stdout -xvf - ./usr/lib/embassy/GIT_HASH.txt | head -c 7)"
 EOS_ENV="$(dpkg-deb --fsys-tarfile overlays/vendor/root/embassyos_0.3.x-1_amd64.deb | tar --to-stdout -xvf - ./usr/lib/embassy/ENVIRONMENT.txt)"
 VERSION_FULL="${VERSION}-${GIT_HASH}"
@@ -67,7 +67,7 @@ export IB_SUITE=${SUITE}
 export IB_TARGET_ARCH=${ARCH}
 export IB_IMAGE_STYLE=${STYLE}
 export IB_NO_FAKEMACHINE=${NO_FAKEMACHINE}
-export VERSION_FULL=~${EOS_ENV}
+export VERSION_FULL=${VERSION_FULL}
 exec ./build.sh
 END
 
