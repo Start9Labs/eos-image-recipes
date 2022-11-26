@@ -1,21 +1,21 @@
 #!/bin/sh
 set -e
 
-echo "==== PureOS Image Build ===="
+echo "==== embassyOS Image Build ===="
 
 if [ -z "$IB_ENVIRONMENT" ]; then
-  IB_ENVIRONMENT="gnome"
-  echo "Building for default OS environment: $IB_ENVIRONMENT"
+  IB_ENVIRONMENT="none"
+  echo "Building without desktop environment"
 else
   echo "Building for environment: $IB_ENVIRONMENT"
 fi
 
 if [ -z "$IB_LITE" ]; then
-  IB_LITE="false"
-  echo "Building for full OS"
-else
   IB_LITE="true"
   echo "Building for lite OS"
+else
+  IB_LITE="false"
+  echo "Building for full OS"
 fi
 
 if [ -z "$IB_SUITE" ]; then
@@ -33,7 +33,7 @@ else
 fi
 
 if [ -z "$IB_IMAGE_STYLE" ]; then
-  IB_IMAGE_STYLE="live"
+  IB_IMAGE_STYLE="custom"
   echo "Building default image variant: $IB_IMAGE_STYLE"
 else
   echo "Building image variant: $IB_IMAGE_STYLE"
@@ -55,22 +55,22 @@ fi
 
 CURRENT_DATE=$(date +%Y%m%d)
 
-case "$IB_SUITE" in
-  byzantium)
-    dist_version="10"
-    dist_reltag="~devel"
-  ;;
-  amber)
-    dist_version="9.0"
-  ;;
-  *)
-    echo "WARNING: Suite $SUITE is unknown" >&2
-    dist_version="0.0"
-  ;;
-esac
-VERSION_FULL="${dist_version}${dist_reltag}"
+# case "$IB_SUITE" in
+#   byzantium)
+#     dist_version="10"
+#     dist_reltag="~devel"
+#   ;;
+#   amber)
+#     dist_version="9.0"
+#   ;;
+#   *)
+#     echo "WARNING: Suite $SUITE is unknown" >&2
+#     dist_version="0.0"
+#   ;;
+# esac
+# VERSION_FULL="${dist_version}${dist_reltag}"
 
-IMAGE_BASENAME=pureos-${VERSION_FULL}-${IB_ENVIRONMENT}$(test "${IB_LITE}" = "true" && echo -n "-lite" || true)-${IB_IMAGE_STYLE}-${CURRENT_DATE}_${IB_TARGET_ARCH}
+IMAGE_BASENAME=eos-${VERSION_FULL}-${CURRENT_DATE}_${IB_TARGET_ARCH}
 
 
 rm -rf ./disk-ws-tmp/

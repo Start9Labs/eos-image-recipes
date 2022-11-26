@@ -12,8 +12,12 @@ sudo apt install debspawn
 sudo mkdir -p /etc/debspawn/ && echo "AllowUnsafePermissions=true" | sudo tee /etc/debspawn/global.toml
 debspawn create byzantium
 
-# Build byzantium-none-live-lite image
-./run-local-build.sh byzantium none custom "" true
+# Get dpkg
+mkdir -p overlays/vendor/root
+wget -O overlays/vendor/root/embassyos_0.3.x-1_amd64.deb <dpkg_url>
+
+# Build byzantium-based image
+./run-local-build.sh byzantium
 ```
 
 In order for the build to work properly, you will need debspawn >= 0.5.1, the
