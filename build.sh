@@ -5,7 +5,7 @@ echo "==== embassyOS Image Build ===="
 
 if [ -z "$IB_ENVIRONMENT" ]; then
   IB_ENVIRONMENT="none"
-  echo "Building for without desktop environment"
+  echo "Building without desktop environment"
 else
   echo "Building for environment: $IB_ENVIRONMENT"
 fi
