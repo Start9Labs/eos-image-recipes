@@ -11,6 +11,10 @@ useradd --shell /bin/bash -m start9
 echo start9:embassy | chpasswd
 usermod -aG sudo start9
 
+if ! [[ "$(cat /usr/lib/embassy/ENVIRONMENT.txt)" =~ (^|-)dev($|-) ]]; then
+    passwd -l start9
+fi
+
 sed -i '/ USERNAME=/d' /etc/casper.conf
 sed -i 's/HOST="pureos"/HOST="embassy"/g' /etc/casper.conf
 sed -i 's/BUILD_SYSTEM="PureOS"/BUILD_SYSTEM="embassyOS"/g' /etc/casper.conf
