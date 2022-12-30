@@ -22,3 +22,9 @@ sed -i 's/BUILD_SYSTEM="PureOS"/BUILD_SYSTEM="embassyOS"/g' /etc/casper.conf
 echo "start9 ALL=(ALL:ALL) NOPASSWD: ALL" | sudo tee "/etc/sudoers.d/010_start9-nopasswd"
 
 /usr/lib/embassy/scripts/enable-kiosk
+
+# sysbox
+apt-get install -y jq
+wget https://downloads.nestybox.com/sysbox/releases/v0.5.2/sysbox-ce_0.5.2-0.linux_amd64.deb
+apt-get install -y ./sysbox-ce_0.5.2-0.linux_amd64.deb
+rm ./sysbox-ce_0.5.2-0.linux_amd64.deb
