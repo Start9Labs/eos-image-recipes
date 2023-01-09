@@ -18,10 +18,12 @@ actions:
   - action: apt
     recommends: false
     packages: [ curl ]
+
   - action: run
     description: Set up APT sources
     chroot: true
     script: vendor/setup-apt-sources.sh
+    
   - action: overlay
     source: overlays/vendor/
     
