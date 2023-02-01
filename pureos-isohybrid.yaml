@@ -213,7 +213,7 @@ actions:
     label: make-isohybrid
     command: xorriso
                -outdev "{{ $results_dir }}/{{ $image }}.iso"
-               -volid "eOS {{ $version }} {{ $environment }} ({{ $imagestyle }})"
+               -volid "eOS {{ $version }} {{ $environment }}"
                -padding 0
                -compliance no_emul_toc
                -map $ARTIFACTDIR/disk-ws-tmp/contents /
