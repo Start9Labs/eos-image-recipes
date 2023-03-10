@@ -10,6 +10,13 @@ official embassyOS images, you can use the `run-local-build.sh` helper script:
 # Prerequisites
 sudo apt install debspawn
 sudo mkdir -p /etc/debspawn/ && echo "AllowUnsafePermissions=true" | sudo tee /etc/debspawn/global.toml
+
+wget https://repo.pureos.net/pureos/pool/main/d/debootstrap/debootstrap_1.0.125pureos1_all.deb
+sudo apt install ./debootstrap_1.0.125pureos1_all.deb
+
+wget https://repo.pureos.net/pureos/pool/main/p/pureos-archive-keyring/pureos-archive-keyring_2021.11.0_all.deb
+sudo apt-get install -y ./pureos-archive-keyring_2021.11.0_all.deb
+
 debspawn create byzantium
 
 # Get dpkg
